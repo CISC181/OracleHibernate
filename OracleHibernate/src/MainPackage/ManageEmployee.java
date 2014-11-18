@@ -39,32 +39,34 @@ public class ManageEmployee {
 		ManageEmployee ME = new ManageEmployee();
 
 		/* Add few employee records in database */
-		int empID1 = ME.addEmployee(1, "Zara", "Ali", 1000);
-		int empID2 = ME.addEmployee(2, "Daisy", "Das", 5000);
-		int empID3 = ME.addEmployee(3, "John", "Paul", 10000);
+		int empID1 = ME.addEmployee("Zara", "Ali", 1000);
+		int empID2 = ME.addEmployee("Daisy", "Das", 5000);
+		int empID3 = ME.addEmployee("John", "Paul", 10000);
 
 		/* List down all the employees */
 		ME.listEmployees();
 
 		/* Update employee's records */
-		ME.updateEmployee(1, 5000);
+		ME.updateEmployee(empID1, 5000);
 
 		/* Delete an employee from the database */
-		ME.deleteEmployee(2);
+		ME.deleteEmployee(empID2);
 
 		/* List down new list of the employees */
 		ME.listEmployees();
 	}
 
 	/* Method to CREATE an employee in the database */
-	public int addEmployee(int id, String fname, String lname, int salary) {
+	public int addEmployee(String fname, String lname, int salary) {
 		Session session = factory.openSession();
 		Transaction tx = null;
 		int employeeID = 0;
 		try {
 			tx = session.beginTransaction();
-			Employee employee = new Employee(id, fname, lname, salary);
-			session.save(employee);
+			Employee employee = new Employee(fname, lname, salary);
+			//session.save(employee);
+	         employeeID = (Integer) session.save(employee); 
+	         
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null)

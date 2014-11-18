@@ -14,9 +14,8 @@ public class DBUser implements java.io.Serializable {
 	public DBUser() {
 	}
 
-	public DBUser(int userId, String username, String createdBy,
+	public DBUser(String username, String createdBy,
 			Date createdDate) {
-		this.userId = userId;
 		this.username = username;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;

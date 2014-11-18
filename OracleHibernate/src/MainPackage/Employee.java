@@ -9,8 +9,7 @@ public class Employee {
 	public Employee() {
 	}
 
-	public Employee(int id, String fname, String lname, int salary) {
-		this.id = id;
+	public Employee(String fname, String lname, int salary) {
 		this.firstName = fname;
 		this.lastName = lname;
 		this.salary = salary;

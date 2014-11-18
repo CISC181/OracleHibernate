@@ -20,12 +20,12 @@ public class ManageDBUser {
 		session.beginTransaction();
 		DBUser user = new DBUser();
  
-		user.setUserId(100);
-		user.setUsername("superman");
+		user.setUsername("Bert");
 		user.setCreatedBy("system");
 		user.setCreatedDate(new Date());
- 
-		session.save(user);
+
+		int UserID = (Integer) session.save(user);
+		
 		session.getTransaction().commit();
 	}
 
