@@ -6,10 +6,10 @@
 
 	<session-factory>
 		<property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
-		<property name="hibernate.default_schema">BERT</property>
-		<property name="hibernate.connection.username">Bert</property>
-		<property name="hibernate.connection.password">Circuit1</property>
-		<property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>
+		<property name="hibernate.default_schema">CSC164</property>
+		<property name="hibernate.connection.username">CSC164</property>
+		<property name="hibernate.connection.password">Section1</property>
+		<property name="hibernate.connection.url">jdbc:oracle:thin:@csc164.canrkwijj6g6.us-east-1.rds.amazonaws.com:1521:CSC164</property>
 		<property name="show_sql">true</property>
 		<property name="format_sql">true</property>
 		<mapping resource="MainPackage/Employee.hbm.xml" />
