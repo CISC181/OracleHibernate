@@ -64,7 +64,7 @@ public class ManageEmployee {
 		try {
 			tx = session.beginTransaction();
 			Employee employee = new Employee(fname, lname, salary);
-			//session.save(employee);
+			session.save(employee);
 	         employeeID = (Integer) session.save(employee); 
 	         
 			tx.commit();
