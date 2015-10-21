@@ -8,34 +8,39 @@ import java.util.Iterator;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 
 public class ManageEmployee {
 
 	private static SessionFactory factory;
 	private ArrayList<Employee> emps = new ArrayList<Employee>();
 
-	private static SessionFactory sessionFactory;
+	// private static SessionFactory sessionFactory;
 	private static ServiceRegistry serviceRegistry;
 
-	
-	public static void main(String[] args) {
-		try {
-			   Configuration configuration = new Configuration();
-			    configuration.configure();
-			    serviceRegistry = new ServiceRegistryBuilder().applySettings(
-			            configuration.getProperties()).build();
-			    factory = configuration.buildSessionFactory(serviceRegistry);
+	private static final SessionFactory sessionFactory = buildSessionFactory();
 
-			    
-			// factory = new Configuration().configure().buildSessionFactory();
-		} catch (Throwable ex) {
-			System.err.println("Failed to create sessionFactory object." + ex);
-			throw new ExceptionInInitializerError(ex);
-		}
+	private static SessionFactory buildSessionFactory() {
+		Configuration configuration = new Configuration().configure(); 
+		StandardServiceRegistryBuilder serviceRegistryBuilder = new StandardServiceRegistryBuilder();
+		serviceRegistryBuilder.applySettings(configuration.getProperties());
+		ServiceRegistry serviceRegistry = serviceRegistryBuilder.build();	
+		return configuration.buildSessionFactory(serviceRegistry);
+	}
+
+	public static SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	public static void shutdown() {
+		getSessionFactory().close();
+	}
+
+	public static void main(String[] args) {
+
 		ManageEmployee ME = new ManageEmployee();
 
 		/* Add few employee records in database */
@@ -58,15 +63,15 @@ public class ManageEmployee {
 
 	/* Method to CREATE an employee in the database */
 	public int addEmployee(String fname, String lname, int salary) {
-		Session session = factory.openSession();
+		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		int employeeID = 0;
 		try {
 			tx = session.beginTransaction();
 			Employee employee = new Employee(fname, lname, salary);
 			session.save(employee);
-	         employeeID = (Integer) session.save(employee); 
-	         
+			employeeID = (Integer) session.save(employee);
+
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null)
@@ -80,7 +85,7 @@ public class ManageEmployee {
 
 	/* Method to READ all the employees */
 	public void listEmployees() {
-		Session session = factory.openSession();
+		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		System.out.println("-----------------------------------");
 		System.out.println("Listing the Employees");
@@ -108,12 +113,11 @@ public class ManageEmployee {
 
 	/* Method to UPDATE salary for an employee */
 	public void updateEmployee(int EmployeeID, int salary) {
-		Session session = factory.openSession();
+		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			Employee employee = (Employee) session.get(Employee.class,
-					EmployeeID);
+			Employee employee = (Employee) session.get(Employee.class, EmployeeID);
 			employee.setSalary(salary);
 			session.update(employee);
 			tx.commit();
@@ -128,12 +132,11 @@ public class ManageEmployee {
 
 	/* Method to DELETE an employee from the records */
 	public void deleteEmployee(int EmployeeID) {
-		Session session = factory.openSession();
+		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			Employee employee = (Employee) session.get(Employee.class,
-					EmployeeID);
+			Employee employee = (Employee) session.get(Employee.class, EmployeeID);
 			session.delete(employee);
 			tx.commit();
 		} catch (HibernateException e) {
