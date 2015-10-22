@@ -14,18 +14,25 @@ import util.HibernateUtil;
 public class ManageDBUser {
 
 	public static void main(String[] args) {
-		System.out.println("Maven + Hibernate + Oracle");
+		System.out.println("Hibernate + Oracle");
+		// session starts/opens a hibernate session
 		Session session = HibernateUtil.getSessionFactory().openSession();
  
+		//	Starts a transaction (transaction can either be committed or rolled back
 		session.beginTransaction();
+		
+		//	Create a new DBUser instance
 		DBUser user = new DBUser();
  
+		//	Setters.
 		user.setUsername("Bert");
 		user.setCreatedBy("system");
 		user.setCreatedDate(new Date());
 
+		//	session.save will cause hibernate to generate the sql required to save the record
 		int UserID = (Integer) session.save(user);
 		
+		//	commit() saves the record(s) permenantly.  
 		session.getTransaction().commit();
 	}
 

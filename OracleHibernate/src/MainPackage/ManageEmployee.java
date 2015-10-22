@@ -13,31 +13,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import util.HibernateUtil;
+
 public class ManageEmployee {
 
-	private static SessionFactory factory;
 	private ArrayList<Employee> emps = new ArrayList<Employee>();
-
-	// private static SessionFactory sessionFactory;
-	private static ServiceRegistry serviceRegistry;
-
-	private static final SessionFactory sessionFactory = buildSessionFactory();
-
-	private static SessionFactory buildSessionFactory() {
-		Configuration configuration = new Configuration().configure(); 
-		StandardServiceRegistryBuilder serviceRegistryBuilder = new StandardServiceRegistryBuilder();
-		serviceRegistryBuilder.applySettings(configuration.getProperties());
-		ServiceRegistry serviceRegistry = serviceRegistryBuilder.build();	
-		return configuration.buildSessionFactory(serviceRegistry);
-	}
-
-	public static SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-
-	public static void shutdown() {
-		getSessionFactory().close();
-	}
 
 	public static void main(String[] args) {
 
@@ -63,7 +43,7 @@ public class ManageEmployee {
 
 	/* Method to CREATE an employee in the database */
 	public int addEmployee(String fname, String lname, int salary) {
-		Session session = sessionFactory.openSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 		int employeeID = 0;
 		try {
@@ -85,7 +65,7 @@ public class ManageEmployee {
 
 	/* Method to READ all the employees */
 	public void listEmployees() {
-		Session session = sessionFactory.openSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 		System.out.println("-----------------------------------");
 		System.out.println("Listing the Employees");
@@ -113,7 +93,7 @@ public class ManageEmployee {
 
 	/* Method to UPDATE salary for an employee */
 	public void updateEmployee(int EmployeeID, int salary) {
-		Session session = sessionFactory.openSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
@@ -132,7 +112,7 @@ public class ManageEmployee {
 
 	/* Method to DELETE an employee from the records */
 	public void deleteEmployee(int EmployeeID) {
-		Session session = sessionFactory.openSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();

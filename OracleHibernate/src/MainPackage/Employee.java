@@ -1,6 +1,6 @@
 package MainPackage;
 
-public class Employee {
+public class Employee implements java.io.Serializable {
 	private int id;
 	private String firstName;
 	private String lastName;
