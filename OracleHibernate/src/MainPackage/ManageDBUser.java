@@ -25,7 +25,7 @@ public class ManageDBUser {
 		DBUser user = new DBUser();
  
 		//	Setters.
-		user.setUsername("Bert");
+		user.setUsername("Vinay");
 		user.setCreatedBy("system");
 		user.setCreatedDate(new Date());
 
